@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,5 +61,20 @@ public class ProductController {
     }
     productService.delete(productModelOptional.get());
     return ResponseEntity.status(HttpStatus.OK).body("Product deleted sucessfully!");
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Object> replaceNameProduct(@PathVariable(value = "id") UUID id,
+      @RequestBody @Valid ProductDto productDto) {
+    Optional<ProductModel> productModelOptional = productService.findById(id);
+    if (!productModelOptional.isPresent()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
+    }
+    var productModel = new ProductModel();
+    BeanUtils.copyProperties(productDto, productModel);
+    productModel.setId(productModelOptional.get().getId());
+    productModel.setQuantity(productModelOptional.get().getQuantity());
+    productModel.setCreatedAt(productModelOptional.get().getCreatedAt());
+    return ResponseEntity.status(HttpStatus.OK).body(productService.save(productModel));
   }
 }
