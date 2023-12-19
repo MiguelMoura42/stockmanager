@@ -29,8 +29,8 @@ public class ProductService {
     return productRepository.findAll();
   }
 
-  public Optional<ProductModel> findById(UUID id) {
-    return productRepository.findById(id);
+  public Optional<ProductModel> findByName(String name) {
+    return productRepository.findByName(name);
   }
 
   @Transactional
@@ -38,4 +38,7 @@ public class ProductService {
     productRepository.delete(productModel);
   }
 
+  public Optional<ProductModel> findById(UUID id) {
+    return productRepository.findById(id);
+  }
 }

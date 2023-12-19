@@ -44,9 +44,9 @@ public class ProductController {
     return ResponseEntity.status(HttpStatus.OK).body(productService.findAll());
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<Object> getOneProduct(@PathVariable(value = "id") UUID id) {
-    Optional<ProductModel> productModelOptional = productService.findById(id);
+  @GetMapping("/{name}")
+  public ResponseEntity<Object> getOneProduct(@PathVariable(value = "name") String name) {
+    Optional<ProductModel> productModelOptional = productService.findByName(name);
     if (!productModelOptional.isPresent()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
     }
@@ -63,10 +63,10 @@ public class ProductController {
     return ResponseEntity.status(HttpStatus.OK).body("Product deleted sucessfully!");
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<Object> replaceNameProduct(@PathVariable(value = "id") UUID id,
+  @PutMapping("/{name}")
+  public ResponseEntity<Object> replaceNameProduct(@PathVariable(value = "name") String name,
       @RequestBody @Valid ProductDto productDto) {
-    Optional<ProductModel> productModelOptional = productService.findById(id);
+    Optional<ProductModel> productModelOptional = productService.findByName(name);
     if (!productModelOptional.isPresent()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
     }
