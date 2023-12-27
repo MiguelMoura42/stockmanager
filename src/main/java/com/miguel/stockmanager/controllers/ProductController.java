@@ -33,7 +33,7 @@ public class ProductController {
   }
 
   @PostMapping
-  public ResponseEntity<ProductModel> saveProduct(@RequestBody @Valid ProductDto productDto) {
+  public ResponseEntity<ProductModel> createProduct(@RequestBody @Valid ProductDto productDto) {
     var productModel = new ProductModel();
     BeanUtils.copyProperties(productDto, productModel);
     return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(productModel));
