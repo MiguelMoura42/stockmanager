@@ -2,7 +2,6 @@ package com.miguel.stockmanager.controllers;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -54,7 +53,7 @@ public class ProductController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Object> deleteOneProduct(@PathVariable(value = "id") UUID id) {
+  public ResponseEntity<Object> deleteOneProduct(@PathVariable(value = "id") Long id) {
     Optional<ProductModel> productModelOptional = productService.findById(id);
     if (!productModelOptional.isPresent()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");

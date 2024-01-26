@@ -2,7 +2,6 @@ package com.miguel.stockmanager.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -38,7 +37,7 @@ public class ProductService {
     productRepository.delete(productModel);
   }
 
-  public Optional<ProductModel> findById(UUID id) {
+  public Optional<ProductModel> findById(Long id) {
     return productRepository.findById(id);
   }
 }
