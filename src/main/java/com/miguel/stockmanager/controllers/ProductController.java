@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.miguel.stockmanager.dtos.ProductDto;
 import com.miguel.stockmanager.models.ProductModel;
+import com.miguel.stockmanager.requests.ProductRequest;
 import com.miguel.stockmanager.services.ProductService;
 
 import jakarta.validation.Valid;
@@ -32,9 +32,9 @@ public class ProductController {
   }
 
   @PostMapping
-  public ResponseEntity<ProductModel> createProduct(@RequestBody @Valid ProductDto productDto) {
+  public ResponseEntity<ProductModel> createProduct(@RequestBody @Valid ProductRequest productRequest) {
     var productModel = new ProductModel();
-    BeanUtils.copyProperties(productDto, productModel);
+    BeanUtils.copyProperties(productRequest, productModel);
     return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(productModel));
   }
 
@@ -64,13 +64,13 @@ public class ProductController {
 
   @PutMapping("/{name}")
   public ResponseEntity<Object> replaceNameProduct(@PathVariable(value = "name") String name,
-      @RequestBody @Valid ProductDto productDto) {
+      @RequestBody @Valid ProductRequest productRequest) {
     Optional<ProductModel> productModelOptional = productService.findByName(name);
     if (!productModelOptional.isPresent()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
     }
     var productModel = new ProductModel();
-    BeanUtils.copyProperties(productDto, productModel);
+    BeanUtils.copyProperties(productRequest, productModel);
     productModel.setId(productModelOptional.get().getId());
     productModel.setQuantity(productModelOptional.get().getQuantity());
     productModel.setCreatedAt(productModelOptional.get().getCreatedAt());

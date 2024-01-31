@@ -9,15 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 @Entity(name = "entries")
 public class EntryModel {
 
@@ -32,4 +24,47 @@ public class EntryModel {
   private LocalDate entryDate = LocalDate.now();
   @Positive
   private int quantityAdded;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public ProductModel getProductModel() {
+    return productModel;
+  }
+
+  public void setProductModel(ProductModel productModel) {
+    this.productModel = productModel;
+  }
+
+  public LocalDate getEntryDate() {
+    return entryDate;
+  }
+
+  public void setEntryDate(LocalDate entryDate) {
+    this.entryDate = entryDate;
+  }
+
+  public int getQuantityAdded() {
+    return quantityAdded;
+  }
+
+  public void setQuantityAdded(int quantityAdded) {
+    this.quantityAdded = quantityAdded;
+  }
+
+  public EntryModel(Long id, ProductModel productModel, LocalDate entryDate, @Positive int quantityAdded) {
+    this.id = id;
+    this.productModel = productModel;
+    this.entryDate = entryDate;
+    this.quantityAdded = quantityAdded;
+  }
+
+  public EntryModel() {
+  }
+
 }
