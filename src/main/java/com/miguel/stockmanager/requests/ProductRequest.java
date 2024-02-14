@@ -1,7 +1,6 @@
 package com.miguel.stockmanager.requests;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.miguel.stockmanager.models.ProductModel;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -15,8 +14,11 @@ public class ProductRequest {
     this.name = name.toUpperCase();
   }
 
-  public ProductModel fromProductRequest() {
-    return new ProductModel(null, name, 0, null);
+  public ProductRequest(@NotBlank String name) {
+    this.name = name;
+  }
+
+  public ProductRequest() {
   }
 
   public String getName() {
@@ -26,12 +28,4 @@ public class ProductRequest {
   public void setName(String name) {
     this.name = name;
   }
-
-  public ProductRequest(@NotBlank String name) {
-    this.name = name;
-  }
-
-  public ProductRequest() {
-  }
-
 }

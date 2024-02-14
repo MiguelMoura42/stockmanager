@@ -32,6 +32,16 @@ public class ProductModel implements Serializable {
   @OneToMany(mappedBy = "productModel")
   private List<ExitModel> exits = new ArrayList<>();
 
+  public ProductModel(Long id, String name, int quantity, LocalDate createdAt) {
+    this.id = id;
+    this.name = name;
+    this.quantity = quantity;
+    this.createdAt = createdAt;
+  }
+
+  public ProductModel() {
+  }
+
   public Long getId() {
     return id;
   }
@@ -72,16 +82,6 @@ public class ProductModel implements Serializable {
     return exits;
   }
 
-  public ProductModel(Long id, String name, int quantity, LocalDate createdAt) {
-    this.id = id;
-    this.name = name;
-    this.quantity = quantity;
-    this.createdAt = createdAt;
-  }
-
-  public ProductModel() {
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -106,5 +106,4 @@ public class ProductModel implements Serializable {
       return false;
     return true;
   }
-
 }

@@ -10,6 +10,7 @@ public class ProductResponse {
   public ProductResponse(ProductModel productModel) {
     this.id = productModel.getId();
     this.name = productModel.getName();
+    this.quantity = productModel.getQuantity();
   }
 
   public Long getId() {
