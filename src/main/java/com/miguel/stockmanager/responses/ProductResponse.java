@@ -1,24 +1,18 @@
 package com.miguel.stockmanager.responses;
 
+import java.time.LocalDate;
+
 import com.miguel.stockmanager.models.ProductModel;
 
 public class ProductResponse {
-  private Long id;
   private String name;
   private int quantity;
+  private LocalDate createdAt;
 
   public ProductResponse(ProductModel productModel) {
-    this.id = productModel.getId();
     this.name = productModel.getName();
     this.quantity = productModel.getQuantity();
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
+    this.createdAt = productModel.getCreatedAt();
   }
 
   public String getName() {
@@ -35,6 +29,14 @@ public class ProductResponse {
 
   public void setQuantity(int quantity) {
     this.quantity = quantity;
+  }
+
+  public LocalDate getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDate createdAt) {
+    this.createdAt = createdAt;
   }
 
 }

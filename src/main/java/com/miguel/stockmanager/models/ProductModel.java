@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity(name = "products")
 @Table(name = "products")
@@ -22,6 +23,7 @@ public class ProductModel implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   @Column(unique = true)
+  @NotBlank
   private String name;
   private int quantity = 0;
   private LocalDate createdAt = LocalDate.now();
@@ -106,4 +108,5 @@ public class ProductModel implements Serializable {
       return false;
     return true;
   }
+
 }

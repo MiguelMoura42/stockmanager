@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.miguel.stockmanager.models.ProductModel;
 import com.miguel.stockmanager.requests.ProductRequest;
+import com.miguel.stockmanager.responses.ProductResponse;
 import com.miguel.stockmanager.services.ProductService;
 
 import jakarta.validation.Valid;
@@ -32,48 +33,25 @@ public class ProductController {
   }
 
   @PostMapping
-  public ResponseEntity<ProductModel> createProduct(@RequestBody @Valid ProductRequest productRequest) {
-    var productModel = new ProductModel();
-    BeanUtils.copyProperties(productRequest, productModel);
-    return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(productModel));
+  public ResponseEntity<ProductResponse> createProduct(@RequestBody @Valid ProductRequest productRequest) {
+    var productResponse = productService.save(productRequest);
+    return ResponseEntity.status(HttpStatus.CREATED).body(productResponse);
   }
 
   @GetMapping
-  public ResponseEntity<List<ProductModel>> getAllProducts() {
+  public ResponseEntity<List<ProductResponse>> getAllProducts() {
     return ResponseEntity.status(HttpStatus.OK).body(productService.findAll());
   }
 
   @GetMapping("/{name}")
-  public ResponseEntity<Object> getOneProduct(@PathVariable(value = "name") String name) {
-    Optional<ProductModel> productModelOptional = productService.findByName(name);
-    if (!productModelOptional.isPresent()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
-    }
-    return ResponseEntity.status(HttpStatus.OK).body(productModelOptional.get());
+  public ResponseEntity<ProductResponse> getOneProduct(@PathVariable(value = "name") String name) {
+    ProductResponse product = productService.getProductByName(name);
+    return ResponseEntity.status(HttpStatus.OK).body(product);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Object> deleteOneProduct(@PathVariable(value = "id") Long id) {
-    Optional<ProductModel> productModelOptional = productService.findById(id);
-    if (!productModelOptional.isPresent()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
-    }
-    productService.delete(productModelOptional.get());
+  public ResponseEntity<Object> deleteProduct(@PathVariable(value = "id") Long id) {
+    productService.deleteProductById(id);
     return ResponseEntity.status(HttpStatus.OK).body("Product deleted sucessfully!");
-  }
-
-  @PutMapping("/{name}")
-  public ResponseEntity<Object> replaceNameProduct(@PathVariable(value = "name") String name,
-      @RequestBody @Valid ProductRequest productRequest) {
-    Optional<ProductModel> productModelOptional = productService.findByName(name);
-    if (!productModelOptional.isPresent()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
-    }
-    var productModel = new ProductModel();
-    BeanUtils.copyProperties(productRequest, productModel);
-    productModel.setId(productModelOptional.get().getId());
-    productModel.setQuantity(productModelOptional.get().getQuantity());
-    productModel.setCreatedAt(productModelOptional.get().getCreatedAt());
-    return ResponseEntity.status(HttpStatus.OK).body(productService.save(productModel));
   }
 }

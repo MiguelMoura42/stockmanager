@@ -2,11 +2,8 @@ package com.miguel.stockmanager.requests;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-import jakarta.validation.constraints.NotBlank;
-
 public class ProductRequest {
 
-  @NotBlank
   private String name;
 
   @JsonSetter("name")
@@ -14,7 +11,7 @@ public class ProductRequest {
     this.name = name.toUpperCase();
   }
 
-  public ProductRequest(@NotBlank String name) {
+  public ProductRequest(String name) {
     this.name = name;
   }
 
