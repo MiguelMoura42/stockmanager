@@ -25,6 +25,9 @@ public class ProductModel implements Serializable {
   @Column(unique = true)
   @NotBlank
   private String name;
+  @Column(unique = true)
+  @NotBlank
+  private String qpm;
   private int quantity = 0;
   private LocalDate createdAt = LocalDate.now();
 
@@ -34,9 +37,10 @@ public class ProductModel implements Serializable {
   @OneToMany(mappedBy = "productModel")
   private List<ExitModel> exits = new ArrayList<>();
 
-  public ProductModel(Long id, String name, int quantity, LocalDate createdAt) {
+  public ProductModel(Long id, String name, String qpm, int quantity, LocalDate createdAt) {
     this.id = id;
     this.name = name;
+    this.qpm = qpm;
     this.quantity = quantity;
     this.createdAt = createdAt;
   }
@@ -58,6 +62,14 @@ public class ProductModel implements Serializable {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getQpm() {
+    return qpm;
+  }
+
+  public void setQpm(String qpm) {
+    this.qpm = qpm;
   }
 
   public int getQuantity() {

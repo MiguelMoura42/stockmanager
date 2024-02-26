@@ -6,11 +6,13 @@ import com.miguel.stockmanager.models.ProductModel;
 
 public class ProductResponse {
   private String name;
+  private String qpm;
   private int quantity;
   private LocalDate createdAt;
 
   public ProductResponse(ProductModel productModel) {
     this.name = productModel.getName();
+    this.qpm = productModel.getQpm();
     this.quantity = productModel.getQuantity();
     this.createdAt = productModel.getCreatedAt();
   }
@@ -21,6 +23,14 @@ public class ProductResponse {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getQpm() {
+    return qpm;
+  }
+
+  public void setQpm(String qpm) {
+    this.qpm = qpm;
   }
 
   public int getQuantity() {
