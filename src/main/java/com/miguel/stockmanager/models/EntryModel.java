@@ -16,14 +16,22 @@ public class EntryModel {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-
   @ManyToOne
   @JoinColumn(name = "product_id")
   private ProductModel productModel;
-
   private LocalDate entryDate = LocalDate.now();
   @Positive
-  private int quantityAdded;
+  private int quantity;
+
+  public EntryModel() {
+  }
+
+  public EntryModel(Long id, ProductModel productModel, LocalDate entryDate, int quantity) {
+    this.id = id;
+    this.productModel = productModel;
+    this.entryDate = entryDate;
+    this.quantity = quantity;
+  }
 
   public Long getId() {
     return id;
@@ -41,30 +49,20 @@ public class EntryModel {
     this.productModel = productModel;
   }
 
-  public LocalDate getEntryDate() {
+  public LocalDate getentryDate() {
     return entryDate;
   }
 
-  public void setEntryDate(LocalDate entryDate) {
+  public void setentryDate(LocalDate entryDate) {
     this.entryDate = entryDate;
   }
 
-  public int getQuantityAdded() {
-    return quantityAdded;
+  public int getQuantity() {
+    return quantity;
   }
 
-  public void setQuantityAdded(int quantityAdded) {
-    this.quantityAdded = quantityAdded;
-  }
-
-  public EntryModel(Long id, ProductModel productModel, LocalDate entryDate, @Positive int quantityAdded) {
-    this.id = id;
-    this.productModel = productModel;
-    this.entryDate = entryDate;
-    this.quantityAdded = quantityAdded;
-  }
-
-  public EntryModel() {
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
   }
 
 }

@@ -1,9 +1,7 @@
 package com.miguel.stockmanager.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,9 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.miguel.stockmanager.models.ProductModel;
+import com.miguel.stockmanager.requests.EntryRequest;
 import com.miguel.stockmanager.requests.ProductRequest;
 import com.miguel.stockmanager.responses.ProductResponse;
 import com.miguel.stockmanager.services.ProductService;
@@ -53,5 +52,17 @@ public class ProductController {
   public ResponseEntity<Object> deleteProduct(@PathVariable(value = "id") Long id) {
     productService.deleteProductById(id);
     return ResponseEntity.status(HttpStatus.OK).body("Product deleted sucessfully!");
+  }
+
+  @PutMapping("/{productId}")
+  public ResponseEntity<String> addQuantityToProduct(@RequestBody @Valid EntryRequest entryRequest,
+      @PathVariable(value = "productId") Long productId) {
+    try {
+      productService.addQuantityToProduct(entryRequest, productId);
+      return ResponseEntity.status(HttpStatus.OK).body("Quantity added successfully!");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to add quantity!");
+    }
+
   }
 }
