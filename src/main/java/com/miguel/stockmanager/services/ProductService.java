@@ -56,17 +56,17 @@ public class ProductService {
   @Transactional
   public void deleteProductById(Long id) {
     Optional<ProductModel> optionalProductModel = productRepository.findById(id);
-    if (optionalProductModel.isPresent()) {
-      productRepository.deleteById(id);
-    } else {
-      throw new IllegalArgumentException("Product not found with this id!");
-    }
+    optionalProductModel.ifPresentOrElse(
+        product -> productRepository.findById(id),
+        () -> {
+          throw new IllegalArgumentException("Product not found with this id!");
+        });
   }
 
   @Transactional
   public void addQuantityToProduct(EntryRequest entryRequest, Long productId) {
     ProductModel productModel = getProductById(productId);
-    uptadeProductQuantity(entryRequest, productModel);
+    updateProductQuantity(entryRequest, productModel);
     saveEntryModel(entryRequest, productModel);
   }
 
@@ -75,7 +75,7 @@ public class ProductService {
         .orElseThrow(() -> new IllegalArgumentException("Product not found!"));
   }
 
-  public void uptadeProductQuantity(EntryRequest entryRequest, ProductModel productModel) {
+  public void updateProductQuantity(EntryRequest entryRequest, ProductModel productModel) {
     int currentQuantity = productModel.getQuantity();
     productModel.setQuantity((currentQuantity + entryRequest.getQuantity()));
     productRepository.save(productModel);
