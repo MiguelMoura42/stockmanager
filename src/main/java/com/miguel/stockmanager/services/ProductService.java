@@ -39,26 +39,21 @@ public class ProductService {
   public List<ProductResponse> findAll() {
     List<ProductModel> products = productRepository.findAll();
     return products.stream()
-        .map(product -> new ProductResponse(product))
+        .map(ProductResponse::new)
         .collect(Collectors.toList());
   }
 
   public ProductResponse getProductByName(String name) {
     Optional<ProductModel> optionalProductModel = productRepository.findByName(name);
-    if (optionalProductModel.isPresent()) {
-      ProductModel productModel = optionalProductModel.get();
-      return new ProductResponse(productModel);
-    } else {
-      throw new IllegalArgumentException("Product not found with this name!");
-    }
+    return optionalProductModel.map(ProductResponse::new)
+        .orElseThrow(() -> new IllegalArgumentException("Product not found with this name!"));
   }
 
   @Transactional
   public void deleteProductById(Long id) {
     Optional<ProductModel> optionalProductModel = productRepository.findById(id);
     optionalProductModel.ifPresentOrElse(
-        product -> productRepository.findById(id),
-        () -> {
+        product -> productRepository.deleteById(id), () -> {
           throw new IllegalArgumentException("Product not found with this id!");
         });
   }
