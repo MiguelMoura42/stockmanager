@@ -2,15 +2,15 @@ package com.miguel.stockmanager.requests;
 
 import jakarta.validation.constraints.Positive;
 
-public class EntryRequest {
+public class ExitRequest {
 
   @Positive
   private int quantity;
 
-  public EntryRequest() {
+  public ExitRequest() {
   }
 
-  public EntryRequest(int quantity) {
+  public ExitRequest(int quantity) {
     this.quantity = quantity;
   }
 

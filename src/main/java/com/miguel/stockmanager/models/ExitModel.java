@@ -8,9 +8,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Positive;
 
-@Entity(name = "entries")
-public class EntryModel {
+@Entity(name = "exits")
+public class ExitModel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,16 +19,16 @@ public class EntryModel {
   @ManyToOne
   @JoinColumn(name = "product_id")
   private ProductModel productModel;
-  private LocalDate entryDate = LocalDate.now();
+  private LocalDate exitDate = LocalDate.now();
   private int quantity;
 
-  public EntryModel() {
+  public ExitModel() {
   }
 
-  public EntryModel(Long id, ProductModel productModel, LocalDate entryDate, int quantity) {
+  public ExitModel(Long id, ProductModel productModel, LocalDate exitDate, @Positive int quantity) {
     this.id = id;
     this.productModel = productModel;
-    this.entryDate = entryDate;
+    this.exitDate = exitDate;
     this.quantity = quantity;
   }
 
@@ -47,12 +48,12 @@ public class EntryModel {
     this.productModel = productModel;
   }
 
-  public LocalDate getentryDate() {
-    return entryDate;
+  public LocalDate getExitDate() {
+    return exitDate;
   }
 
-  public void setentryDate(LocalDate entryDate) {
-    this.entryDate = entryDate;
+  public void setExitDate(LocalDate exitDate) {
+    this.exitDate = exitDate;
   }
 
   public int getQuantity() {
@@ -62,5 +63,4 @@ public class EntryModel {
   public void setQuantity(int quantity) {
     this.quantity = quantity;
   }
-
 }

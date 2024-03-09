@@ -2,12 +2,16 @@ package com.miguel.stockmanager.models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
@@ -27,6 +31,11 @@ public class ProductModel implements Serializable {
   private String qpm;
   private int quantity = 0;
   private LocalDate createdAt = LocalDate.now();
+
+  @OneToMany(mappedBy = "productModel", cascade = CascadeType.REMOVE)
+  private List<EntryModel> entries = new ArrayList<>();
+  @OneToMany(mappedBy = "productModel", cascade = CascadeType.REMOVE)
+  private List<ExitModel> exits = new ArrayList<>();
 
   public ProductModel(Long id, String name, String qpm, int quantity, LocalDate createdAt) {
     this.id = id;
@@ -77,6 +86,14 @@ public class ProductModel implements Serializable {
 
   public void setCreatedAt(LocalDate createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public List<EntryModel> getEntries() {
+    return entries;
+  }
+
+  public List<ExitModel> getExits() {
+    return exits;
   }
 
   @Override

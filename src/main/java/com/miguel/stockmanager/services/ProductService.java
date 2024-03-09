@@ -8,10 +8,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.miguel.stockmanager.models.EntryModel;
+import com.miguel.stockmanager.models.ExitModel;
 import com.miguel.stockmanager.models.ProductModel;
 import com.miguel.stockmanager.repositories.EntryRepository;
+import com.miguel.stockmanager.repositories.ExitRepository;
 import com.miguel.stockmanager.repositories.ProductRepository;
 import com.miguel.stockmanager.requests.EntryRequest;
+import com.miguel.stockmanager.requests.ExitRequest;
 import com.miguel.stockmanager.requests.ProductRequest;
 import com.miguel.stockmanager.responses.ProductResponse;
 
@@ -22,10 +25,13 @@ public class ProductService {
 
   final ProductRepository productRepository;
   final EntryRepository entryRepository;
+  final ExitRepository exitRepository;
 
-  public ProductService(ProductRepository productRepository, EntryRepository entryRepository) {
+  public ProductService(ProductRepository productRepository, EntryRepository entryRepository,
+      ExitRepository exitRepository) {
     this.productRepository = productRepository;
     this.entryRepository = entryRepository;
+    this.exitRepository = exitRepository;
   }
 
   @Transactional
@@ -61,8 +67,16 @@ public class ProductService {
   @Transactional
   public void addQuantityToProduct(EntryRequest entryRequest, Long productId) {
     ProductModel productModel = getProductById(productId);
-    updateProductQuantity(entryRequest, productModel);
+    addQuantity(entryRequest, productModel);
     saveEntryModel(entryRequest, productModel);
+  }
+
+  @Transactional
+  public void removeQuantityToProduct(ExitRequest exitRequest, Long productId) {
+    ProductModel productModel = getProductById(productId);
+    validatingExitRequest(exitRequest, productModel);
+    removeQuantity(exitRequest, productModel);
+    saveExitModel(exitRequest, productModel);
   }
 
   private ProductModel getProductById(Long productId) {
@@ -70,9 +84,23 @@ public class ProductService {
         .orElseThrow(() -> new IllegalArgumentException("Product not found!"));
   }
 
-  public void updateProductQuantity(EntryRequest entryRequest, ProductModel productModel) {
+  private void validatingExitRequest(ExitRequest exitRequest, ProductModel productModel) {
+    int currentQuantity = productModel.getQuantity();
+    int quantityToRemove = exitRequest.getQuantity();
+    if (quantityToRemove > currentQuantity) {
+      throw new IllegalArgumentException("Quantity to remove exceeds available quantity in stock.");
+    }
+  }
+
+  public void addQuantity(EntryRequest entryRequest, ProductModel productModel) {
     int currentQuantity = productModel.getQuantity();
     productModel.setQuantity((currentQuantity + entryRequest.getQuantity()));
+    productRepository.save(productModel);
+  }
+
+  public void removeQuantity(ExitRequest exitRequest, ProductModel productModel) {
+    int currentQuantity = productModel.getQuantity();
+    productModel.setQuantity((currentQuantity - exitRequest.getQuantity()));
     productRepository.save(productModel);
   }
 
@@ -83,4 +111,10 @@ public class ProductService {
     entryRepository.save(entry);
   }
 
+  private void saveExitModel(ExitRequest exitRequest, ProductModel productModel) {
+    ExitModel exit = new ExitModel();
+    exit.setProductModel(productModel);
+    exit.setQuantity(exitRequest.getQuantity());
+    exitRepository.save(exit);
+  }
 }
