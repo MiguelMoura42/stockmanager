@@ -3,7 +3,6 @@ package com.miguel.stockmanager.requests;
 import jakarta.validation.constraints.Positive;
 
 public class EntryRequest {
-
   @Positive
   private int quantity;
 

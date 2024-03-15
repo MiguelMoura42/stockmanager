@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.miguel.stockmanager.exceptions.IdNotFoundException;
+import com.miguel.stockmanager.exceptions.NameNotFoundException;
+import com.miguel.stockmanager.exceptions.QuantityAboveLimitException;
 import com.miguel.stockmanager.models.EntryModel;
 import com.miguel.stockmanager.models.ExitModel;
 import com.miguel.stockmanager.models.ProductModel;
@@ -52,16 +55,13 @@ public class ProductService {
   public ProductResponse getProductByName(String name) {
     Optional<ProductModel> optionalProductModel = productRepository.findByName(name);
     return optionalProductModel.map(ProductResponse::new)
-        .orElseThrow(() -> new IllegalArgumentException("Product not found with this name!"));
+        .orElseThrow(() -> new NameNotFoundException(name));
   }
 
   @Transactional
   public void deleteProductById(Long id) {
-    Optional<ProductModel> optionalProductModel = productRepository.findById(id);
-    optionalProductModel.ifPresentOrElse(
-        product -> productRepository.deleteById(id), () -> {
-          throw new IllegalArgumentException("Product not found with this id!");
-        });
+    getProductById(id);
+    productRepository.deleteById(id);
   }
 
   @Transactional
@@ -81,14 +81,14 @@ public class ProductService {
 
   private ProductModel getProductById(Long productId) {
     return productRepository.findById(productId)
-        .orElseThrow(() -> new IllegalArgumentException("Product not found!"));
+        .orElseThrow(() -> new IdNotFoundException(productId));
   }
 
   private void validatingExitRequest(ExitRequest exitRequest, ProductModel productModel) {
     int currentQuantity = productModel.getQuantity();
     int quantityToRemove = exitRequest.getQuantity();
     if (quantityToRemove > currentQuantity) {
-      throw new IllegalArgumentException("Quantity to remove exceeds available quantity in stock.");
+      throw new QuantityAboveLimitException();
     }
   }
 

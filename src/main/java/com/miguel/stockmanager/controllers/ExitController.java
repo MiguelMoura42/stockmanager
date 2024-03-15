@@ -26,12 +26,7 @@ public class ExitController {
   @PutMapping("/{productId}")
   public ResponseEntity<String> exitQuantity(@RequestBody @Valid ExitRequest exitRequest,
       @PathVariable(value = "productId") Long productId) {
-    try {
-      productService.removeQuantityToProduct(exitRequest, productId);
-      return ResponseEntity.ok().body("Quantity removed successfully!");
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to remove quantity!");
-    }
+    productService.removeQuantityToProduct(exitRequest, productId);
+    return ResponseEntity.ok().body("Quantity removed successfully!");
   }
-
 }

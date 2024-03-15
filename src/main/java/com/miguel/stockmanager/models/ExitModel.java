@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Positive;
 
 @Entity(name = "exits")
 public class ExitModel {
@@ -25,7 +24,7 @@ public class ExitModel {
   public ExitModel() {
   }
 
-  public ExitModel(Long id, ProductModel productModel, LocalDate exitDate, @Positive int quantity) {
+  public ExitModel(Long id, ProductModel productModel, LocalDate exitDate, int quantity) {
     this.id = id;
     this.productModel = productModel;
     this.exitDate = exitDate;
