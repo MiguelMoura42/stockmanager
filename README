@@ -1,0 +1,40 @@
+Aplicativo de Gerenciamento de Estoque
+
+*Visão Geral
+O Aplicativo de Gerenciamento de Estoque é projetado para gerenciar produtos, suas quantidades e transações como entradas e saídas. Ele fornece funcionalidades para criar, recuperar, atualizar e excluir produtos, bem como adicionar ou remover quantidades de produtos existentes.
+
+**Compilar e Executar
+1 Clone o repositório.
+2 Navegue até o diretório do projeto.
+3 Compile o projeto usando o Maven: mvn clean install.
+4 Execute a aplicação: java -jar target/stock-manager-1.0.0.jar.
+5 A aplicação será iniciada na porta configurada (padrão: 8080).
+
+***Recursos
+1 Criar Produto: Permite aos usuários criar um novo produto fornecendo apenas o nome e o qpm, um identificador unico de cada produto, composto por letras e números.
+
+2 Recuperar Produtos: Permite aos usuários recuperar uma lista de todos os produtos ou pesquisar um produto específico pelo nome.
+
+3 Excluir Produto: Fornece funcionalidade para excluir um produto pelo seu identificador único (ID).
+
+4 Adicionar Quantidade ao Produto: Permite aos usuários adicionar uma quantidade especificada a um produto existente.
+
+5 Remover Quantidade do Produto: Permite aos usuários remover uma quantidade especificada de um produto existente.
+
+****Usabilidade
+
+1 Criar Produto:
+Envie uma solicitação POST para /products com um corpo JSON contendo um nome e qpm válidos.
+
+2 Recuperar Produtos:
+Envie uma solicitação GET para /products para recuperar todos os produtos.
+Envie uma solicitação GET para /products/{name} para recuperar um produto específico pelo nome.
+
+3 Excluir Produto:
+Envie uma solicitação DELETE para /products/{id} para excluir um produto pelo ID.
+
+4 Adicionar Quantidade ao Produto:
+Envie uma solicitação POST para /products/entries/{id} com um payload JSON contendo a quantidade a ser adicionada.
+
+5 Remover Quantidade do Produto:
+Envie uma solicitação POST para /products/exits/{id} com um payload JSON contendo a quantidade a ser removida.
