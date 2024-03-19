@@ -16,10 +16,14 @@ import com.miguel.stockmanager.requests.ProductRequest;
 import com.miguel.stockmanager.responses.ProductResponse;
 import com.miguel.stockmanager.services.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/products")
+@Tag(name = "Products", description = "Controller to products")
 public class ProductController {
 
   final ProductService productService;
@@ -29,24 +33,29 @@ public class ProductController {
   }
 
   @PostMapping
+  @Operation(summary = "Creates a new product")
+  @ApiResponse(responseCode = "201")
   public ResponseEntity<ProductResponse> createProduct(@RequestBody @Valid ProductRequest productRequest) {
     var productResponse = productService.save(productRequest);
     return ResponseEntity.status(HttpStatus.CREATED).body(productResponse);
   }
 
   @GetMapping
+  @Operation(summary = "Get all products")
   public ResponseEntity<List<ProductResponse>> getAllProducts() {
     return ResponseEntity.ok().body(productService.findAll());
   }
 
   @GetMapping("/{name}")
-  public ResponseEntity<ProductResponse> getOneProduct(@PathVariable(value = "name") String name) {
+  @Operation(summary = "Get a product by name")
+  public ResponseEntity<ProductResponse> getOneProduct(@PathVariable String name) {
     ProductResponse product = productService.getProductByName(name);
     return ResponseEntity.ok().body(product);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Object> deleteProduct(@PathVariable(value = "id") Long id) {
+  @Operation(summary = "Deletes a product by id")
+  public ResponseEntity<Object> deleteProduct(@PathVariable Long id) {
     productService.deleteProductById(id);
     return ResponseEntity.ok().body("Product deleted sucessfully!");
   }

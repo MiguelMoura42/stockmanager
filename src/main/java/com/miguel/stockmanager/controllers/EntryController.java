@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.miguel.stockmanager.requests.EntryRequest;
 import com.miguel.stockmanager.services.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/products/entries")
+@Tag(name = "Entries", description = "Controller to entries")
 public class EntryController {
 
   final ProductService productService;
@@ -23,8 +26,9 @@ public class EntryController {
   }
 
   @PutMapping("/{productId}")
+  @Operation(summary = "Adds quantity to a product")
   public ResponseEntity<String> addQuantity(@RequestBody @Valid EntryRequest entryRequest,
-      @PathVariable(value = "productId") Long productId) {
+      @PathVariable Long productId) {
     productService.addQuantityToProduct(entryRequest, productId);
     return ResponseEntity.ok().body("Quantity added successfully!");
   }
